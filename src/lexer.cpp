@@ -22,6 +22,8 @@
 
 using namespace __mxml;
 
+const std::string _lexer::_COMMENT_STR[_COMMENT_COUNT] = { "!", "-", };
+const std::set<std::string> _lexer::_COMMENT_SET(_COMMENT_STR, _COMMENT_STR + _COMMENT_COUNT);
 const std::string _lexer::_SYMBOL_STR[_SYMBOL_COUNT] = { "<", ">", "</", "/>", "/", "\"", "=", };
 const std::set<std::string> _lexer::_SYMBOL_SET(_SYMBOL_STR, _SYMBOL_STR + _SYMBOL_COUNT);
 
@@ -51,6 +53,30 @@ _lexer &_lexer::operator=(const _lexer &other) {
 	_state = other._state;
 	_buff.operator =(other._buff);
 	return *this;
+}
+
+size_t _lexer::_comment_to_type(const std::string &input) {
+	size_t i = 0;
+	for(; i < _COMMENT_COUNT; ++i)
+		if(_COMMENT_STR[i] == input)
+			return i;
+	return (size_t) -1;
+}
+
+size_t _lexer::_comment_to_type(void) {
+	return _comment_to_type(_text);
+}
+
+bool _lexer::_is_comment(const std::string &input) {
+	return _COMMENT_SET.find(input) != _COMMENT_SET.end();
+}
+
+bool _lexer::_is_comment(void) {
+	return _is_comment(_text);
+}
+
+bool _lexer::_is_comment(size_t type) {
+	return _comment_to_type() == type;
 }
 
 bool _lexer::_read_type(size_t type) {
@@ -91,9 +117,70 @@ bool _lexer::_read_type(size_t type) {
 }
 
 void _lexer::_skip_whitespace(void) {
-	while(_buff.has_next()
-			&& _buff.is_whitespace())
+	size_t i, depth = 0;
+	while(_buff.has_next()) {
+		if(symbol_to_type(std::string(1, _buff.current())) == SYMBOL_TYPE_OPEN_BRACKET) {
+			if(_comment_to_type(std::string(1, _buff.peek())) == _COMMENT_TYPE_BANG)
+				if(_buff.has_next()) {
+					_buff.next();
+					++depth;
+					for(i = 0; i < 2; ++i)
+						if(_comment_to_type(std::string(1, _buff.peek())) == _COMMENT_TYPE_HYPHEN) {
+							if(_buff.has_next()) {
+								_buff.next();
+								++depth;
+							} else {
+								_unskip_whitespace(depth);
+								return;
+							}
+						} else {
+							_unskip_whitespace(depth);
+							return;
+						}
+					_skip_whitespace_end();
+					_skip_whitespace();
+					return;
+				} else
+					return;
+			else
+				return;
+		} else if(!_buff.is_whitespace())
+			return;
 		_buff.next();
+	}
+}
+
+void _lexer::_skip_whitespace_end(void) {
+	while(_buff.has_next()) {
+		if(_comment_to_type(std::string(1, _buff.current())) == _COMMENT_TYPE_HYPHEN) {
+			if(_buff.has_next()) {
+				_buff.next();
+				if(_comment_to_type(std::string(1, _buff.current())) == _COMMENT_TYPE_HYPHEN) {
+					if(_buff.has_next()) {
+						_buff.next();
+						if(symbol_to_type(std::string(1, _buff.current())) == SYMBOL_TYPE_CLOSE_BRACKET) {
+							_buff.next();
+							return;
+						} else
+							continue;
+					} else
+						return;
+				} else
+					continue;
+			} else
+				return;
+		}
+		_buff.next();
+	}
+}
+
+void _lexer::_unskip_whitespace(size_t depth) {
+	size_t i = 0;
+	for(; i < depth; ++i) {
+		if(!_buff.has_previous())
+			return;
+		_buff.previous();
+	}
 }
 
 pb_buffer &_lexer::get_buffer(void) {
@@ -140,7 +227,8 @@ bool _lexer::next(void) {
 		_type = TYPE_END;
 		return false;
 	}
-	_skip_whitespace();
+	if(_init)
+		_skip_whitespace();
 	ch = _buff.current();
 	if(ch == pb_buffer::_EOS)
 		return false;
@@ -162,6 +250,9 @@ bool _lexer::next(void) {
 				if(!is_symbol()) {
 					_text = _text.substr(0, _text.size() - 1);
 					_buff.previous();
+					type = symbol_to_type();
+					if(type == SYMBOL_TYPE_OPEN_BRACKET)
+						_state = _STATE_IDENTIFIER;
 				} else
 					_state = _STATE_IDENTIFIER;
 			}
@@ -179,6 +270,7 @@ bool _lexer::next(void) {
 	}
 	_init = false;
 	_buff.next();
+	_skip_whitespace();
 	return true;
 }
 

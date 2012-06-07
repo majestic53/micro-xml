@@ -29,9 +29,17 @@ namespace __mxml {
 
 	typedef class _lexer {
 		protected:
+			static const size_t _COMMENT_COUNT = 2;
+			static const std::string _COMMENT_STR[_COMMENT_COUNT];
+			static const std::set<std::string> _COMMENT_SET;
 			static const size_t _SYMBOL_COUNT = 7;
 			static const std::string _SYMBOL_STR[_SYMBOL_COUNT];
 			static const std::set<std::string> _SYMBOL_SET;
+
+			enum _COMMENT_TYPE {
+				_COMMENT_TYPE_BANG,
+				_COMMENT_TYPE_HYPHEN,
+			};
 
 			enum _STATE {
 				_STATE_IDENTIFIER,
@@ -43,8 +51,15 @@ namespace __mxml {
 			std::string _text;
 			size_t _type, _state;
 
+			static size_t _comment_to_type(const std::string &input);
+			size_t _comment_to_type(void);
+			static bool _is_comment(const std::string &input);
+			bool _is_comment(void);
+			bool _is_comment(size_t type);
 			bool _read_type(size_t type);
 			void _skip_whitespace(void);
+			void _skip_whitespace_end(void);
+			void _unskip_whitespace(size_t depth);
 
 		public:
 			enum SYMBOL_TYPE {

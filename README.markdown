@@ -37,15 +37,17 @@ Syntax
 
 Here's the simplified XML BNF:
 ```
-node ::= '<' <id> <attribute_list> <node_end> | (empty)
+attribute ::= <id> '=' '"' <string> '"'
 
 attribute_list ::= <attribute> <attribute_list> | (empty)
 
-attribute ::= <id> '=' '"' <string> '"'
+node ::= '<' <id> <attribute_list> <node_end> | (empty)
 
 node_end ::= '/>' | '>' <element> '</' <id> '>'
 
-element ::= <node> | <string>
+node_list ::= <node> <node_list> | (empty)
+
+element ::= <node_list> | <string>
 ```
 
 License

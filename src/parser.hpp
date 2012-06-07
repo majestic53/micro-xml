@@ -28,7 +28,7 @@ namespace __mxml {
 
 	typedef class _parser {
 		protected:
-			static const size_t _EXCEPTION_COUNT = 10;
+			static const size_t _EXCEPTION_COUNT = 9;
 			static const std::string _EXCEPTION_MESSAGE[_EXCEPTION_COUNT];
 
 			enum _EXCEPTION_TYPE {
@@ -41,18 +41,17 @@ namespace __mxml {
 				_EXCEPTION_EXPECTING_STRING,
 				_EXCEPTION_EXPECTING_STRING_OPEN_QUOTE,
 				_EXCEPTION_EXPECTING_STRING_CLOSE_QUOTE,
-				_EXCEPTION_EXPECTING_STRING_OR_NODE,
 			};
 
 			_lexer _lex;
 
 			void _attribute(void);
 			void _attribute_list(void);
-			void _element(void);
 			static std::string _format_exception(_lexer &lex, size_t exc);
 			void _parse(_node &nod);
 			void _node(void);
 			void _node_end(void);
+			void _node_list(void);
 
 		public:
 			_parser(void);
@@ -62,6 +61,8 @@ namespace __mxml {
 			_parser &operator=(const _parser &other);
 			lexer &get_lexer(void);
 			std::string to_string(void);
+
+			void parse(node &nod) { _parse(nod); }
 
 			friend class _document;
 	} parser;

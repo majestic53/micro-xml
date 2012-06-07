@@ -33,7 +33,6 @@ const std::string _parser::_EXCEPTION_MESSAGE[_EXCEPTION_COUNT] = {
 		"Expecting string value",
 		"Expecting open quote after assignment",
 		"Expecting close quote after string value",
-		"Expecting either a string or nested node",
 };
 
 _parser::_parser(void) {
@@ -86,16 +85,6 @@ void _parser::_attribute_list(void) {
 	_attribute_list();
 }
 
-void _parser::_element(void) {
-	if(_lex.is_symbol(_lexer::SYMBOL_TYPE_OPEN_BRACKET))
-		_node();
-	else {
-		if(!_lex.is_string())
-			throw std::runtime_error(_format_exception(_lex, _EXCEPTION_EXPECTING_STRING_OR_NODE));
-		_lex.next();
-	}
-}
-
 std::string _parser::_format_exception(_lexer &lex, size_t exc) {
 	std::stringstream ss;
 	ss << "[ln. " << lex.get_buffer().get_line() << "], \"" << lex.get_text() << "\": " << _EXCEPTION_MESSAGE[exc];
@@ -128,8 +117,10 @@ void _parser::_node_end(void) {
 		_lex.next();
 	else if(_lex.is_symbol(_lexer::SYMBOL_TYPE_CLOSE_BRACKET)) {
 		_lex.next();
-		while(!_lex.is_symbol(_lexer::SYMBOL_TYPE_OPEN_BRACKET_TERM))
-			_element();
+		if(_lex.is_symbol(_lexer::SYMBOL_TYPE_OPEN_BRACKET))
+			_node_list();
+		else if(_lex.is_string())
+				_lex.next();
 		if(!_lex.is_symbol(_lexer::SYMBOL_TYPE_OPEN_BRACKET_TERM))
 			throw std::runtime_error(_format_exception(_lex, _EXCEPTION_EXPECTING_TERMINATOR));
 		_lex.next();
@@ -141,6 +132,13 @@ void _parser::_node_end(void) {
 		_lex.next();
 	} else
 		throw std::runtime_error(_format_exception(_lex, _EXCEPTION_EXPECTING_CLOSE_BRACKET));
+}
+
+void _parser::_node_list(void) {
+	if(!_lex.is_symbol(_lexer::SYMBOL_TYPE_OPEN_BRACKET))
+		return;
+	_node();
+	_node_list();
 }
 
 lexer &_parser::get_lexer(void) {
