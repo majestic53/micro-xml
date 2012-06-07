@@ -51,7 +51,13 @@ _document &_document::operator=(const _document &other) {
 }
 
 std::string _document::_format_xml(_node &root) {
-	return root.to_string(0);
+	std::string output;
+	try {
+		output = root.to_string(0);
+	} catch(std::runtime_error &exc) {
+		std::cerr << "Exception: " << exc.what() << std::endl;
+	}
+	return output;
 }
 
 bool _document::_parse_xml(const std::string &input, bool is_file, _node &root) {

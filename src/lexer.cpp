@@ -243,7 +243,7 @@ bool _lexer::next(void) {
 		_text += ch;
 		type = symbol_to_type();
 		if(type == SYMBOL_TYPE_OPEN_BRACKET
-				|| type == SYMBOL_TYPE_TERMINATOR) {
+				|| type == SYMBOL_TYPE_TERMINATOR)
 			if(_buff.has_next()) {
 				ch = _buff.next();
 				_text += ch;
@@ -256,7 +256,6 @@ bool _lexer::next(void) {
 				} else
 					_state = _STATE_IDENTIFIER;
 			}
-		}
 	} else {
 		switch(_state) {
 			case _STATE_IDENTIFIER: _type = TYPE_IDENTIFIER;

@@ -18,6 +18,7 @@
  */
 
 #include <sstream>
+#include <stdexcept>
 #include "node.hpp"
 
 using namespace __mxml;
@@ -135,6 +136,9 @@ std::string _node::to_string(size_t tab_index) {
 	if(_nodes.empty()
 			&& _str.empty())
 		ss << " />";
+	else if(!_nodes.empty()
+			&& !_str.empty())
+		throw std::runtime_error(std::string("Node '" + _element::to_string(0) + "' contains both a string and a nested node"));
 	else if(!_str.empty())
 		ss << ">" << _str << "</" << _element::to_string(0) << ">";
 	else {
