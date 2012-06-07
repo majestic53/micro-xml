@@ -62,8 +62,6 @@ namespace __mxml {
 			lexer &get_lexer(void);
 			std::string to_string(void);
 
-			void parse(node &nod) { _parse(nod); }
-
 			friend class _document;
 	} parser;
 
