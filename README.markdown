@@ -3,10 +3,46 @@ Micro-XML
 
 A super small xml parser library written in C++.
 
-Comments
+Purpose
 ========
 
-My attempt at writing a modestly featured, yet simple xml parser. At the moment, the parser can create basic xml files with nested nodes, attributes, and strings.
+The primary goal of this project was to create a simple and small xml parsing library for the purpose of reading-in and writing xml data files. For the sake of simplicity, Micro-XML follows a highly constrained version of the xml standard (See Syntax). Micro-XML does not allow declarations or namespaces. However, unique node attribute names are enforced. This allows for quick parsing by heavily reducing the complexity of the parsing process.
+
+Syntax
+======
+
+Simplified XML BNF used by Micro-XML (xml style comments are not shown, but are allowed):
+```
+attribute ::= <id> '=' '"' <string> '"'
+
+attribute_list ::= <attribute> <attribute_list> | (empty)
+
+node ::= '<' <id> <attribute_list> <node_end> | (empty)
+
+node_end ::= '/>' | '>' <element> '</' <id> '>'
+
+node_list ::= <node> <node_list> | (empty)
+
+element ::= <node_list> | <string>
+```
+
+Use Cases
+========
+
+Micro-XML was designed with two seperate use cases in-mind. Firstly, Micro-XML needs to be able to read and parse xml from a string or file, and produce a searchable document. Secondly, Micro-XML needs to be able to create, modify, and write new xml files. Both these operations can be accomplished by instantiating a 'document' and then calling the associated read or write method (see Types).
+
+Types
+========
+
+An xml data files consist of a series of nodes and associated node attributes. Furthermore, nodes can either nest other nodes, or contain a single string value. For this reason, there are only three basic types: 'nodes', 'attributes', and 'strings'; which all derive from type 'element'.
+
+![Primative type hierarchy](http://dl.dropbox.com/u/6410544/prim_types.png)
+
+From these primitive types, more complete types can be formed. A 'document' is a representation of an xml file in memory, containing a single root 'node'. This type allows for modification, searching, reading and writing of xml files. 
+
+![UML diagram of document type](http://dl.dropbox.com/u/6410544/document.png)
+
+Some types can be aggregated into lists for easier processing. Both 'node' and 'attribute' types can be placed into associated 'node-list' and 'attribute-list' types.
 
 Build
 ======
@@ -32,22 +68,14 @@ Clean:
 make clean
 ```
 
-Syntax
+Using This Library
 ======
 
-Here's the simplified XML BNF:
-```
-attribute ::= <id> '=' '"' <string> '"'
+To use Micro-XML, simply include the library in your project with the appropriate linker flag. Make sure to include the header files in your project as well.
 
-attribute_list ::= <attribute> <attribute_list> | (empty)
-
-node ::= '<' <id> <attribute_list> <node_end> | (empty)
-
-node_end ::= '/>' | '>' <element> '</' <id> '>'
-
-node_list ::= <node> <node_list> | (empty)
-
-element ::= <node_list> | <string>
+When including the header files, don't forget to indicate the namespace:
+```cpp
+using namespace __mxml;
 ```
 
 License
