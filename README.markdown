@@ -34,7 +34,7 @@ Micro-XML was designed with two seperate use cases in-mind. Firstly, Micro-XML n
 Types
 ========
 
-An xml data files consist of a series of nodes and associated node attributes. Furthermore, nodes can either nest other nodes, or contain a single string value. For this reason, there are only three basic types: 'nodes', 'attributes', and 'strings'; which all derive from type 'element'.
+An xml data file consists of a series of nodes and associated node attributes. Furthermore, nodes can either nest other nodes, or contain a single string value. For this reason, there are only two basic types: 'nodes' and 'attributes'; which derive from type 'element'.
 
 ![Primative type hierarchy](http://dl.dropbox.com/u/6410544/prim_types.png)
 
@@ -71,10 +71,17 @@ make clean
 Using This Library
 ======
 
-To use Micro-XML, simply include the library in your project with the appropriate linker flag. Make sure to include the header files in your project as well.
+To use Micro-XML, simply include the library in your project with the appropriate linker flag:
+```
+-lmxml
+```
 
-When including the header files, don't forget to indicate the namespace:
+Make sure to include the header files and indicate the namespace  in your project as well:
 ```cpp
+#include "[path-to-headers]/document.hpp"
+#include "[path-to-headers]/nodes.hpp"
+...
+
 using namespace __mxml;
 ```
 
