@@ -37,7 +37,7 @@ _lexer::_lexer(const std::string &input, bool is_file) :
 }
 
 _lexer::_lexer(const _lexer &other) :
-		_text(other._text), _type(other._type) {
+		_text(other._text), _type(other._type), _state(other._state) {
 	_buff.operator =(other._buff);
 }
 
@@ -120,27 +120,30 @@ void _lexer::_skip_whitespace(void) {
 	size_t i, depth = 0;
 	while(_buff.has_next()) {
 		if(symbol_to_type(std::string(1, _buff.current())) == SYMBOL_TYPE_OPEN_BRACKET) {
-			if(_comment_to_type(std::string(1, _buff.peek())) == _COMMENT_TYPE_BANG)
-				if(_buff.has_next()) {
-					_buff.next();
-					++depth;
-					for(i = 0; i < 2; ++i)
-						if(_comment_to_type(std::string(1, _buff.peek())) == _COMMENT_TYPE_HYPHEN) {
-							if(_buff.has_next()) {
-								_buff.next();
-								++depth;
+			if(_buff.has_next())
+				if(_comment_to_type(std::string(1, _buff.peek())) == _COMMENT_TYPE_BANG)
+					if(_buff.has_next()) {
+						_buff.next();
+						++depth;
+						for(i = 0; i < 2; ++i)
+							if(_comment_to_type(std::string(1, _buff.peek())) == _COMMENT_TYPE_HYPHEN) {
+								if(_buff.has_next()) {
+									_buff.next();
+									++depth;
+								} else {
+									_unskip_whitespace(depth);
+									return;
+								}
 							} else {
 								_unskip_whitespace(depth);
 								return;
 							}
-						} else {
-							_unskip_whitespace(depth);
-							return;
-						}
-					_skip_whitespace_end();
-					_skip_whitespace();
-					return;
-				} else
+						_skip_whitespace_end();
+						_skip_whitespace();
+						return;
+					} else
+						return;
+				else
 					return;
 			else
 				return;
@@ -151,24 +154,21 @@ void _lexer::_skip_whitespace(void) {
 }
 
 void _lexer::_skip_whitespace_end(void) {
+	size_t i;
 	while(_buff.has_next()) {
-		if(_comment_to_type(std::string(1, _buff.current())) == _COMMENT_TYPE_HYPHEN) {
-			if(_buff.has_next()) {
+		for(i = 0; i < 2; ++i)
+			if(_comment_to_type(std::string(1, _buff.current())) == _COMMENT_TYPE_HYPHEN)
+				if(_buff.has_next())
+					_buff.next();
+				else
+					return;
+			else
+				break;
+		if(i == 2
+				&& symbol_to_type(std::string(1, _buff.current())) == SYMBOL_TYPE_CLOSE_BRACKET) {
+			if(_buff.has_next())
 				_buff.next();
-				if(_comment_to_type(std::string(1, _buff.current())) == _COMMENT_TYPE_HYPHEN) {
-					if(_buff.has_next()) {
-						_buff.next();
-						if(symbol_to_type(std::string(1, _buff.current())) == SYMBOL_TYPE_CLOSE_BRACKET) {
-							_buff.next();
-							return;
-						} else
-							continue;
-					} else
-						return;
-				} else
-					continue;
-			} else
-				return;
+			return;
 		}
 		_buff.next();
 	}
@@ -230,8 +230,6 @@ bool _lexer::next(void) {
 	if(_init)
 		_skip_whitespace();
 	ch = _buff.current();
-	if(ch == pb_buffer::_EOS)
-		return false;
 	if(is_symbol(std::string(1, ch))) {
 		type = symbol_to_type(std::string(1, ch));
 		if(!_init
@@ -268,8 +266,10 @@ bool _lexer::next(void) {
 		_read_type(_type);
 	}
 	_init = false;
-	_buff.next();
-	_skip_whitespace();
+	if(_buff.has_next()) {
+		_buff.next();
+		_skip_whitespace();
+	}
 	return true;
 }
 

@@ -21,7 +21,6 @@
 #define PB_BUFF_HPP_
 
 #include <fstream>
-#include <sstream>
 #include <string>
 
 namespace __mxml {
@@ -29,13 +28,11 @@ namespace __mxml {
 	typedef class _pb_buffer {
 		protected:
 			static const char _NL = '\n';
-			static const char _EOS = -1;
+			static const char _EOS = '\0';
 
 			char _ch;
-			size_t _line, _pos, _size;
-			std::stringstream _buff;
-
-			static size_t _size_helper(std::stringstream &buff);
+			size_t _line, _pos;
+			std::string _buff;
 
 		public:
 			_pb_buffer(void);
@@ -44,7 +41,7 @@ namespace __mxml {
 			virtual ~_pb_buffer(void);
 			_pb_buffer &operator=(const _pb_buffer &other);
 			char current(void);
-			std::stringstream &get_buffer(void);
+			std::string &get_buffer(void);
 			size_t get_line(void);
 			bool has_next(void);
 			bool has_previous(void);

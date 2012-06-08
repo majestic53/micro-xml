@@ -17,32 +17,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <sstream>
 #include <stdexcept>
 #include "pb_buff.hpp"
 
 using namespace __mxml;
 
 _pb_buffer::_pb_buffer(void) {
-	_line = 1;
-	_pos = 0;
+	reset();
 }
 
 _pb_buffer::_pb_buffer(const std::string &input, bool is_file) {
+	std::stringstream ss;
 	if(is_file) {
 		std::ifstream file(input.c_str(), std::ios::in);
 		if(!file)
 			throw std::runtime_error(std::string(input + " (file not found)"));
-		_buff << std::noskipws << file.rdbuf();
+		ss << std::noskipws << file.rdbuf();
+		_buff = ss.str();
 		file.close();
 	} else
-		_buff << std::noskipws << input;
+		_buff = input;
 	reset();
 }
 
 _pb_buffer::_pb_buffer(const _pb_buffer &other) :
-		_line(other._line), _pos(other._pos) {
-	_buff << std::noskipws << other._buff.rdbuf();
-	_buff.seekg(_pos, std::ios::beg);
+		_ch(other._ch), _line(other._line), _pos(other._pos), _buff(other._buff) {
+	return;
 }
 
 _pb_buffer::~_pb_buffer(void) {
@@ -52,26 +53,20 @@ _pb_buffer::~_pb_buffer(void) {
 _pb_buffer &_pb_buffer::operator=(const _pb_buffer &other) {
 	if(this == &other)
 		return *this;
+	_ch = other._ch;
 	_line = other._line;
 	_pos = other._pos;
-	_buff << std::noskipws << other._buff.rdbuf();
-	_buff.seekg(_pos, std::ios::beg);
+	_buff = other._buff;
 	return *this;
 }
 
-size_t _pb_buffer::_size_helper(std::stringstream &buff) {
-	size_t len, off = buff.tellg();
-	buff.seekg(0, std::ios::end);
-	len = buff.tellg();
-	buff.seekg(off, std::ios::beg);
-	return len;
-}
-
 char _pb_buffer::current(void) {
-	return _ch;
+	if(_pos >= _buff.size())
+		return _EOS;
+	return _buff.at(_pos);
 }
 
-std::stringstream &_pb_buffer::get_buffer(void) {
+std::string &_pb_buffer::get_buffer(void) {
 	return _buff;
 }
 
@@ -80,7 +75,7 @@ size_t _pb_buffer::get_line(void) {
 }
 
 bool _pb_buffer::has_next(void) {
-	return _buff.good();
+	return _pos < _buff.size();
 }
 
 bool _pb_buffer::has_previous(void) {
@@ -88,56 +83,49 @@ bool _pb_buffer::has_previous(void) {
 }
 
 bool _pb_buffer::is_whitespace(void) {
-	return isspace(_ch)
-			|| _ch == _EOS;
+	return isspace(_ch);
 }
 
 char _pb_buffer::next(void) {
-	if(!_buff.good())
-		return _EOS;
-	_ch = (char) _buff.get();
+	++_pos;
+	_ch = current();
 	if(_ch == _NL)
 		++_line;
-	++_pos;
 	return _ch;
 }
 
 char _pb_buffer::peek(void) {
-	return _buff.peek();
+	if(_pos + 1 >= _buff.size())
+		return _EOS;
+	return _buff.at(_pos + 1);
 }
 
 char _pb_buffer::previous(void) {
-	if(!_pos)
-		return _EOS;
-	else if(!_buff.good())
-		_buff.clear();
-	_buff.seekg(-1, std::ios::cur);
-	_ch = (char) _buff.peek();
+	--_pos;
+	_ch = current();
 	if(_ch == _NL)
 		--_line;
-	--_pos;
 	return _ch;
 }
 
 void _pb_buffer::reset(void) {
 	_line = 1;
 	_pos = 0;
-	_buff.clear();
-	_buff.seekg(0, std::ios::beg);
-	_ch = _EOS;
+	if(_buff.empty())
+		_ch = _EOS;
+	else
+		_ch = current();
 }
 
 size_t _pb_buffer::size(void) {
-	return _size_helper(_buff) + 1;
+	return _buff.size();
 }
 
 std::string _pb_buffer::to_string(void) {
-	int ch;
 	std::stringstream ss;
 	ss << _line << " [" << _pos << "]: ";
-	ch = _buff.peek();
-	ss << (isspace(ch) ? "(WS)" :
-			((ch == _EOS) ? "(EOS)" :
-					std::string(1, ch)));
+	ss << (isspace(_ch) ? "(WS)" :
+			((_ch == _EOS) ? "(EOS)" :
+					std::string(1, _ch)));
 	return ss.str();
 }
