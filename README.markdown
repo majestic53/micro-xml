@@ -55,7 +55,7 @@ This project has not been tested in a Windows environment. However, the files sh
 
 Using the makefile to generate a static library (.a)
 
-Requirements:
+Requirements (tested with):
 * g++ 4.4 or newer (or any compiler with c++0x compliance)
 * make 3.8 or newer
 
@@ -136,7 +136,7 @@ int main(void) {
 	document doc;
 	doc.read("demo.xml");
 
-	// retrieve a node list containing all contact's names
+	// retrieve a node list containing all contact names
 	node_list lst = doc.get_nodes_by_name("name");
 
 	// process the nodes...
