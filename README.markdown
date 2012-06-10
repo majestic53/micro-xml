@@ -144,7 +144,7 @@ int main(void) {
 	// process the nodes...
 	std::cout << "Contact Names: " << std::endl;
 	for(size_t i = 0; i < lst.size(); ++i)
-		std::cout << "[" << (i + 1) << "]: " << lst.get_node_at(i).get_string() << std::endl;
+		std::cout << "(" << (i + 1) << "): " << lst.get_node_at(i).get_string() << std::endl;
 	return 0;
 }
 ```
@@ -152,9 +152,9 @@ int main(void) {
 This example will produce the following output:
 ```
 Contact Names: 
-\[1\]: John
-\[2\]: Sarah
-\[3\]: Dave
+(1): John
+(2): Sarah
+(3): Dave
 ```
 
 ###Writing XML Files
