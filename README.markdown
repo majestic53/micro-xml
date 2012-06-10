@@ -6,7 +6,7 @@ A super small xml parser library written in C++.
 Purpose
 ========
 
-The primary goal of this project was to create a simple and small xml parsing library for the purpose of reading-in and writing xml data files. For the sake of simplicity, Micro-XML follows a highly constrained version of the xml standard (See Syntax). Micro-XML does not allow declarations or namespaces. However, unique node attribute names are enforced. This allows for quick parsing by heavily reducing the complexity of the parsing process.
+The primary goal of this project was to create a small and simple xml parsing library for the purpose of reading-in and writing xml data files. For the sake of simplicity, Micro-XML follows a highly constrained version of the xml standard (See Syntax). Micro-XML does not allow declarations or namespaces. However, unique node attribute names are enforced. This allows for quick parsing by heavily reducing the complexity of the parsing process. This makes this library well suited for low-memory/low-spec applications, such as embedded systems.
 
 Syntax
 ======
@@ -29,7 +29,7 @@ element ::= <node_list> | <string>
 Use Cases
 ========
 
-Micro-XML was designed with two seperate use cases in-mind. Firstly, Micro-XML needs to be able to read and parse xml from a string or file, and produce a searchable document. Secondly, Micro-XML needs to be able to create, modify, and write new xml files. Both these operations can be accomplished by instantiating a 'document' and then calling the associated read or write method (see Types).
+Micro-XML was designed with two seperate use cases in-mind. Firstly, Micro-XML needs to be able to read and parse xml from a string or file, and produce a searchable document. Secondly, Micro-XML needs to be able to create, modify, and write new xml files. Both of these operations can be accomplished by instantiating a 'document' and then calling the associated read or write method (see Types).
 
 Types
 ========
@@ -38,7 +38,7 @@ An xml data file consists of a series of nodes and associated node attributes. F
 
 ![Primative type hierarchy](http://dl.dropbox.com/u/6410544/prim_types.png)
 
-From these primitive types, more complete types can be formed. A 'document' is a representation of an xml file in memory, containing a single root 'node'. This type allows for modification, searching, reading and writing of xml files. 
+From these primitive types, more complex types can be formed. A 'document' is a representation of an xml file in memory, containing a single root 'node'. These types allows for modification, searching, reading and writing of xml files. 
 
 ![UML diagram of document type](http://dl.dropbox.com/u/6410544/document.png)
 
@@ -47,9 +47,15 @@ Some types can be aggregated into lists for easier processing. Both 'node' and '
 Build
 ======
 
+* Windows:
+
+This project has not been tested in a Windows environment. However, the files should be able to be imported into a Visual Studios project without a problem.
+
+* Linux (Unix):
+
 Instructions for compiling Micro-XML from source code
 
-Requirements (tested on):
+Requirements:
 * g++ 4.4 or newer (or any compiler with c++0x compliance)
 * make 3.8 or newer
 
@@ -84,6 +90,8 @@ Make sure to include the header files and indicate the namespace  in your projec
 
 using namespace __mxml;
 ```
+
+Examples will be coming soon.
 
 License
 ======
