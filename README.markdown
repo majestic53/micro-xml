@@ -178,6 +178,7 @@ int main(void) {
 
 	std::string names[] = {"John", "Sarah", "Dave",};
 	std::string phones[] = {"555-5555", "444-4444", "333-3333",};
+	std::string emails[] = {"john@internet.com", "sarah@internet.com", "dave@internet.com",};
 
 	// instantiate a new xml document
 	document doc("address_book");
@@ -192,7 +193,7 @@ int main(void) {
 		node name("name"), phone("phone"), email("email");
 		name.set_string(names[i]);
 		phone.set_string(phones[i]);
-		email.set_string(names[i] + "@internet.com");
+		email.set_string(emails[i]);
 
 		// add sub-nodes to contact node
 		contact.add_node(name);
@@ -204,7 +205,7 @@ int main(void) {
 	}
 
 	// write the document to a file
-	doc.write("demo_write.xml");
+	doc.write("demo.xml");
 	return 0;
 }
 ```
