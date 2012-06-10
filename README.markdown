@@ -53,7 +53,7 @@ This project has not been tested in a Windows environment. However, the files sh
 
 ###Linux (Unix):
 
-Instructions for compiling Micro-XML from source code
+Using the makefile to generate a static library (.a)
 
 Requirements:
 * g++ 4.4 or newer (or any compiler with c++0x compliance)
