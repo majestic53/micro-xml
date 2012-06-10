@@ -46,7 +46,7 @@ void _attribute_list::add_attribute(attribute &attr) {
 	_attributes.push_back(attr);
 }
 
-bool _attribute_list::contains(std::string &name) {
+bool _attribute_list::contains(const std::string &name) {
 	size_t i = 0;
 	for(; i < _attributes.size(); ++i)
 		if(_attributes.at(i).get_name() == name)

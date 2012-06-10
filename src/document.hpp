@@ -22,6 +22,7 @@
 
 #include <string>
 #include "node.hpp"
+#include "node_list.hpp"
 
 namespace __mxml {
 
@@ -32,12 +33,16 @@ namespace __mxml {
 			static std::string _format_xml(_node &root);
 			static bool _parse_xml(const std::string &input, bool is_file, _node &root);
 
+			void _get_nodes_by_name_helper(const std::string &name, _node &nod, _node_list &nod_lst);
+
 		public:
 			_document(void);
 			_document(_node &root);
+			_document(const std::string &name);
 			_document(const _document &other);
 			virtual ~_document(void);
 			_document &operator=(const _document &other);
+			node_list get_nodes_by_name(const std::string &name);
 			node &get_root_node(void);
 			static bool read(const std::string &path, _document &doc);
 			bool read(const std::string &path);
@@ -47,9 +52,6 @@ namespace __mxml {
 			std::string to_string(void);
 			static bool write(const std::string &path, _document &doc);
 			bool write(const std::string &path);
-
-			// TODO: Add functions to find nodes and form nodelists
-
 	} document;
 
 };

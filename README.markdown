@@ -91,7 +91,126 @@ Make sure to include the header files and indicate the namespace  in your projec
 using namespace __mxml;
 ```
 
-Examples will be coming soon.
+Examples
+======
+
+For the purpose of those examples, we will be using the demo xml file listed below.
+```xml
+<!-- 
+	A list of contacts
+-->
+
+<address_book>
+	<contact id="0">
+		<name>John</name>
+		<phone>555-5555</phone>
+		<email>john@internet.com</email>
+	</contact>
+	<contact id="1">
+		<name>Sarah</name>
+		<phone>444-4444</phone>
+		<email>sarah@internet.com</email>
+	</contact>
+	<contact id="2">
+		<name>Dave</name>
+		<phone>333-3333</phone>
+		<email>dave@internet.com</email>
+	</contact>
+</address_book>
+```
+
+###Reading XML Files
+
+This example shows how to read-in an xml file and parse the xml document for data. In this example, we will be parsing the demo xml file (above) for contact names.
+```cpp
+#include <iostream>
+#include <sstream>
+#include <stdexcept>
+#include "document.hpp"
+#include "node.hpp"
+#include "node_list.hpp"
+
+using namespace __mxml;
+
+int main(void) {
+
+	// instantiate an xml document and read-in file
+	document doc;
+	doc.read("demo.xml");
+
+	// retrieve a node list containing all contact's names
+	node_list lst = doc.get_nodes_by_name("name");
+
+	// process the nodes...
+	std::cout << "Contact Names: " << std::endl;
+	for(size_t i = 0; i < lst.size(); ++i)
+		std::cout << "[" << (i + 1) << "]: " << lst.get_node_at(i).get_string() << std::endl;
+	return 0;
+}
+```
+
+This example will produce the following output:
+```
+Contact Names: 
+[1]: John
+[2]: Sarah
+[3]: Dave
+```
+
+###Writing XML Files
+
+This example shows how to create an xml document and then write it to a file. The example below creates the demo xml file shown above.
+```cpp
+#include <iostream>
+#include <sstream>
+#include <stdexcept>
+#include "attribute.hpp"
+#include "document.hpp"
+#include "node.hpp"
+#include "node_list.hpp"
+
+using namespace __mxml;
+
+std::string to_string(size_t input) {
+	std::stringstream ss;
+	ss << input;
+	return ss.str();
+}
+
+int main(void) {
+
+	std::string names[] = {"John", "Sarah", "Dave",};
+	std::string phones[] = {"555-5555", "444-4444", "333-3333",};
+
+	// instantiate a new xml document
+	document doc("address_book");
+
+	// generate contact nodes
+	for(size_t i = 0; i < 3; ++i) {
+		node contact("contact");
+		attribute contact_id("id", to_string(i));
+		contact.add_attribute(contact_id);
+
+		// generate sub-nodes
+		node name("name"), phone("phone"), email("email");
+		name.set_string(names[i]);
+		phone.set_string(phones[i]);
+		email.set_string(names[i] + "@internet.com");
+
+		// add sub-nodes to contact node
+		contact.add_node(name);
+		contact.add_node(phone);
+		contact.add_node(email);
+
+		// add contact node to root node
+		doc.get_root_node().add_node(contact);
+	}
+
+	// write the document to a file
+	doc.write("demo_write.xml");
+	return 0;
+}
+```
 
 License
 ======
