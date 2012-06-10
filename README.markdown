@@ -152,9 +152,9 @@ int main(void) {
 This example will produce the following output:
 ```
 Contact Names: 
-[1]: John
-[2]: Sarah
-[3]: Dave
+\[1\]: John
+\[2\]: Sarah
+\[3\]: Dave
 ```
 
 ###Writing XML Files
