@@ -47,11 +47,11 @@ Some types can be aggregated into lists for easier processing. Both 'node' and '
 Build
 ======
 
-* Windows:
+###Windows:
 
 This project has not been tested in a Windows environment. However, the files should be able to be imported into a Visual Studios project without a problem.
 
-* Linux (Unix):
+###Linux (Unix):
 
 Instructions for compiling Micro-XML from source code
 
