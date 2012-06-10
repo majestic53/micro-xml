@@ -6,7 +6,7 @@ A super small xml parser library written in C++.
 Purpose
 ========
 
-The primary goal of this project was to create a small and simple xml parsing library for the purpose of reading-in and writing xml data files. For the sake of simplicity, Micro-XML follows a highly constrained version of the xml standard (See Syntax). Micro-XML does not allow declarations or namespaces. However, unique node attribute names are enforced. This allows for quick parsing by heavily reducing the complexity of the parsing process. This makes this library well suited for low-memory/low-spec applications, such as embedded systems.
+The primary goal of this project was to create a small and simple xml parsing library for the purpose of reading-in and writing xml data files. For the sake of simplicity, Micro-XML follows a highly constrained version of the xml standard (See Syntax). Micro-XML does not allow declarations or namespaces. However, unique node attribute names are enforced. This allows for quick parsing by heavily reducing the complexity of the parsing process, making the library well suited for low-memory environments, such as embedded systems.
 
 Syntax
 ======
