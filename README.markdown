@@ -124,8 +124,6 @@ For the purpose of those examples, we will be using the demo xml file listed bel
 This example shows how to read-in an xml file and parse the xml document for data. In this example, we will be parsing the demo xml file (above) for contact names.
 ```cpp
 #include <iostream>
-#include <sstream>
-#include <stdexcept>
 #include "document.hpp"
 #include "node.hpp"
 #include "node_list.hpp"
@@ -163,7 +161,6 @@ This example shows how to create an xml document and then write it to a file. Th
 ```cpp
 #include <iostream>
 #include <sstream>
-#include <stdexcept>
 #include "attribute.hpp"
 #include "document.hpp"
 #include "node.hpp"
