@@ -187,7 +187,7 @@ pb_buffer &_lexer::get_buffer(void) {
 	return _buff;
 }
 
-std::string _lexer::get_text(void) {
+std::string &_lexer::get_text(void) {
 	return _text;
 }
 

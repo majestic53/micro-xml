@@ -33,6 +33,8 @@ const std::string _parser::_EXCEPTION_MESSAGE[_EXCEPTION_COUNT] = {
 		"Expecting string value",
 		"Expecting open quote after assignment",
 		"Expecting close quote after string value",
+		"Node name and terminator must match",
+		"Node attributes must be unique",
 };
 
 _parser::_parser(void) {
@@ -60,9 +62,13 @@ _parser &_parser::operator=(const _parser &other) {
 	return *this;
 }
 
-void _parser::_attribute(void) {
+void _parser::_attribute(attribute_list &attr_lst) {
+	attribute attr;
 	if(!_lex.is_identifier())
 		throw std::runtime_error(_format_exception(_lex, _EXCEPTION_EXPECTING_IDENTIFIER));
+	if(attr_lst.contains(_lex.get_text()))
+		throw std::runtime_error(_format_exception(_lex, _EXCEPTION_EXPECTING_UNIQUE_ATTRIBUTE));
+	attr.set_name(_lex.get_text());
 	_lex.next();
 	if(!_lex.is_symbol(_lexer::SYMBOL_TYPE_ASSIGNMENT))
 		throw std::runtime_error(_format_exception(_lex, _EXCEPTION_EXPECTING_ASSIGNMENT));
@@ -72,17 +78,19 @@ void _parser::_attribute(void) {
 	_lex.next();
 	if(!_lex.is_string())
 		throw std::runtime_error(_format_exception(_lex, _EXCEPTION_EXPECTING_STRING));
+	attr.set_value(_lex.get_text());
 	_lex.next();
 	if(!_lex.is_symbol(_lexer::SYMBOL_TYPE_QUOTE))
 		throw std::runtime_error(_format_exception(_lex, _EXCEPTION_EXPECTING_STRING_CLOSE_QUOTE));
 	_lex.next();
+	attr_lst.add_attribute(attr);
 }
 
-void _parser::_attribute_list(void) {
+void _parser::_attribute_list(node &nod) {
 	if(!_lex.is_identifier())
 		return;
-	_attribute();
-	_attribute_list();
+	_attribute(nod.get_attributes());
+	_attribute_list(nod);
 }
 
 std::string _parser::_format_exception(_lexer &lex, size_t exc) {
@@ -92,40 +100,42 @@ std::string _parser::_format_exception(_lexer &lex, size_t exc) {
 }
 
 void _parser::_parse(node &nod) {
-
-	// TODO: Incorporate the generation of the root node in the parsing process
-
-	while(_lex.has_next()) {
+	if(_lex.has_next()) {
 		_lex.next();
-		_node();
+		_node(nod);
 	}
 }
 
-void _parser::_node(void) {
+void _parser::_node(node &nod) {
 	if(!_lex.is_symbol(_lexer::SYMBOL_TYPE_OPEN_BRACKET))
 		throw std::runtime_error(_format_exception(_lex, _EXCEPTION_EXPECTING_OPEN_BRACKET));
 	_lex.next();
 	if(!_lex.is_identifier())
 		throw std::runtime_error(_format_exception(_lex, _EXCEPTION_EXPECTING_IDENTIFIER));
+	nod.set_name(_lex.get_text());
 	_lex.next();
-	_attribute_list();
-	_node_end();
+	_attribute_list(nod);
+	_node_end(nod);
 }
 
-void _parser::_node_end(void) {
+void _parser::_node_end(node &nod) {
 	if(_lex.is_symbol(_lexer::SYMBOL_TYPE_CLOSE_BRACKET_TERM))
 		_lex.next();
 	else if(_lex.is_symbol(_lexer::SYMBOL_TYPE_CLOSE_BRACKET)) {
 		_lex.next();
 		if(_lex.is_symbol(_lexer::SYMBOL_TYPE_OPEN_BRACKET))
-			_node_list();
-		else if(_lex.is_string())
-				_lex.next();
+			_node_list(nod.get_nodes());
+		else if(_lex.is_string()) {
+			nod.set_string(_lex.get_text());
+			_lex.next();
+		}
 		if(!_lex.is_symbol(_lexer::SYMBOL_TYPE_OPEN_BRACKET_TERM))
 			throw std::runtime_error(_format_exception(_lex, _EXCEPTION_EXPECTING_TERMINATOR));
 		_lex.next();
 		if(!_lex.is_identifier())
 			throw std::runtime_error(_format_exception(_lex, _EXCEPTION_EXPECTING_IDENTIFIER));
+		if(_lex.get_text() != nod.get_name())
+			throw std::runtime_error(_format_exception(_lex, _EXCEPTION_EXPECTING_MATCHING_TERMINATOR));
 		_lex.next();
 		if(!_lex.is_symbol(_lexer::SYMBOL_TYPE_CLOSE_BRACKET))
 			throw std::runtime_error(_format_exception(_lex, _EXCEPTION_EXPECTING_CLOSE_BRACKET));
@@ -134,11 +144,13 @@ void _parser::_node_end(void) {
 		throw std::runtime_error(_format_exception(_lex, _EXCEPTION_EXPECTING_CLOSE_BRACKET));
 }
 
-void _parser::_node_list(void) {
+void _parser::_node_list(std::vector<node> &nod_lst) {
+	node nod;
 	if(!_lex.is_symbol(_lexer::SYMBOL_TYPE_OPEN_BRACKET))
 		return;
-	_node();
-	_node_list();
+	_node(nod);
+	nod_lst.push_back(nod);
+	_node_list(nod_lst);
 }
 
 lexer &_parser::get_lexer(void) {

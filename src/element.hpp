@@ -42,6 +42,7 @@ namespace __mxml {
 			_element(const _element &other);
 			virtual ~_element(void);
 			_element &operator=(const _element &other);
+			bool operator==(const _element &other);
 			std::string &get_name(void);
 			size_t get_type(void);
 			void set_name(std::string &name);

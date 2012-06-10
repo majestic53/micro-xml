@@ -46,6 +46,22 @@ void _attribute_list::add_attribute(attribute &attr) {
 	_attributes.push_back(attr);
 }
 
+bool _attribute_list::contains(std::string &name) {
+	size_t i = 0;
+	for(; i < _attributes.size(); ++i)
+		if(_attributes.at(i).get_name() == name)
+			return true;
+	return false;
+}
+
+bool _attribute_list::contains(attribute &attr) {
+	size_t i = 0;
+	for(; i < _attributes.size(); ++i)
+		if(_attributes.at(i) == attr)
+			return true;
+	return false;
+}
+
 attribute &_attribute_list::get_attribute_at(size_t index) {
 	return _attributes.at(index);
 }

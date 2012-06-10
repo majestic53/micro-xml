@@ -36,6 +36,7 @@ namespace __mxml {
 			_attribute(const _attribute &other);
 			virtual ~_attribute(void);
 			_attribute &operator=(const _attribute &other);
+			bool operator==(const _attribute &other);
 			std::string &get_value(void);
 			void set_value(const std::string &value);
 			std::string to_string(size_t tab_index);

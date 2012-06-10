@@ -54,6 +54,13 @@ _element &_element::operator=(const _element &other) {
 	return *this;
 }
 
+bool _element::operator==(const _element &other) {
+	if(this == &other)
+		return true;
+	return _type == other._type
+			&& _name == other._name;
+}
+
 std::string &_element::get_name(void) {
 	return _name;
 }

@@ -49,6 +49,13 @@ _attribute &_attribute::operator=(const _attribute &other) {
 	return *this;
 }
 
+bool _attribute::operator==(const _attribute &other) {
+	if(this == &other)
+		return true;
+	return _element::operator==(other)
+			&& _value == other._value;
+}
+
 std::string &_attribute::get_value(void) {
 	return _value;
 }

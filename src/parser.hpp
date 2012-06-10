@@ -21,6 +21,7 @@
 #define PARSER_HPP_
 
 #include <string>
+#include <vector>
 #include "lexer.hpp"
 #include "node.hpp"
 
@@ -28,7 +29,7 @@ namespace __mxml {
 
 	typedef class _parser {
 		protected:
-			static const size_t _EXCEPTION_COUNT = 9;
+			static const size_t _EXCEPTION_COUNT = 11;
 			static const std::string _EXCEPTION_MESSAGE[_EXCEPTION_COUNT];
 
 			enum _EXCEPTION_TYPE {
@@ -41,17 +42,19 @@ namespace __mxml {
 				_EXCEPTION_EXPECTING_STRING,
 				_EXCEPTION_EXPECTING_STRING_OPEN_QUOTE,
 				_EXCEPTION_EXPECTING_STRING_CLOSE_QUOTE,
+				_EXCEPTION_EXPECTING_MATCHING_TERMINATOR,
+				_EXCEPTION_EXPECTING_UNIQUE_ATTRIBUTE,
 			};
 
 			_lexer _lex;
 
-			void _attribute(void);
-			void _attribute_list(void);
+			void _attribute(_attribute_list &attr_lst);
+			void _attribute_list(_node &nod);
 			static std::string _format_exception(_lexer &lex, size_t exc);
 			void _parse(_node &nod);
-			void _node(void);
-			void _node_end(void);
-			void _node_list(void);
+			void _node(_node &nod);
+			void _node_end(node &nod);
+			void _node_list(std::vector<node> &nod_lst);
 
 		public:
 			_parser(void);

@@ -86,7 +86,7 @@ namespace __mxml {
 			virtual ~_lexer(void);
 			_lexer &operator=(const _lexer &other);
 			pb_buffer &get_buffer(void);
-			std::string get_text(void);
+			std::string &get_text(void);
 			size_t get_type(void);
 			bool has_next(void);
 			bool is_identifier(void);
