@@ -28,7 +28,9 @@ namespace __mxml {
 
 	typedef class _node_list {
 		protected:
-			std::vector<_node> _nodes;
+			std::vector<_node> _lst;
+
+			static void _get_nodes_by_name_helper(const std::string &name, node &nod, _node_list &nod_lst);
 
 		public:
 			_node_list(void);
@@ -38,6 +40,7 @@ namespace __mxml {
 			void add_node(node &nod);
 			node &get_node_at(size_t index);
 			std::vector<node> &get_nodes(void);
+			static size_t get_nodes_by_name(const std::string &name, node &nod, _node_list &nod_lst);
 			bool insert_node(node &nod, size_t index);
 			bool is_empty(void);
 			bool remove_node(size_t index);

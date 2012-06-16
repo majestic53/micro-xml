@@ -65,14 +65,6 @@ std::string _document::_format_xml(_node &root) {
 	return output;
 }
 
-void _document::_get_nodes_by_name_helper(const std::string &name, _node &nod, _node_list &nod_lst) {
-	size_t i = 0;
-	if(nod.get_name() == name)
-		nod_lst.add_node(nod);
-	for(; i < nod.node_size(); ++i)
-		_get_nodes_by_name_helper(name, nod.get_node_at(i), nod_lst);
-}
-
 bool _document::_parse_xml(const std::string &input, bool is_file, _node &root) {
 	parser par;
 	try {
@@ -87,7 +79,7 @@ bool _document::_parse_xml(const std::string &input, bool is_file, _node &root) 
 
 node_list _document::get_nodes_by_name(const std::string &name) {
 	node_list nod_lst;
-	_get_nodes_by_name_helper(name, _root, nod_lst);
+	_node_list::get_nodes_by_name(name, _root, nod_lst);
 	return nod_lst;
 }
 

@@ -119,6 +119,24 @@ For the purpose of those examples, we will be using the demo xml file listed bel
 </address_book>
 ```
 
+###Parsing nodes from XML Files
+
+There are currently two different ways to create nodelists of sub-nodes. The first method involves search from a document's root node; returning a list of all sub-nodes with a given name.
+```cpp
+document doc = ...; // some document
+...
+node_list lst = doc.get_nodes_by_name("name");
+```
+
+The second method is more general, and can be used to both retrieve a series of sub-nodes, as well as a count of the sub-nodes with a given name. This method can be used from any node.
+```cpp
+node nod = ...; // some node either parsed or created
+...
+size_t count;
+node_list lst;
+count = node_list::get_nodes_by_name("name", nod, lst);
+```
+
 ###Reading XML Files
 
 This example shows how to read-in an xml file and parse the xml document for data. In this example, we will be parsing the demo xml file (above) for contact names.

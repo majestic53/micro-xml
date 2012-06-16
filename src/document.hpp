@@ -33,8 +33,6 @@ namespace __mxml {
 			static std::string _format_xml(_node &root);
 			static bool _parse_xml(const std::string &input, bool is_file, _node &root);
 
-			void _get_nodes_by_name_helper(const std::string &name, _node &nod, _node_list &nod_lst);
-
 		public:
 			_document(void);
 			_document(_node &root);

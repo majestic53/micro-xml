@@ -28,7 +28,7 @@ namespace __mxml {
 
 	typedef class _attribute_list {
 		protected:
-			std::vector<_attribute> _attributes;
+			std::vector<_attribute> _lst;
 
 		public:
 			_attribute_list(void);

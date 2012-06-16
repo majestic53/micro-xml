@@ -27,7 +27,7 @@ _node_list::_node_list(void) {
 }
 
 _node_list::_node_list(const _node_list &other) :
-		_nodes(other._nodes) {
+		_lst(other._lst) {
 	return;
 }
 
@@ -38,51 +38,64 @@ _node_list::~_node_list(void) {
 _node_list &_node_list::operator=(const _node_list &other) {
 	if(this == &other)
 		return *this;
-	_nodes = other._nodes;
+	_lst = other._lst;
 	return *this;
 }
 
+void _node_list::_get_nodes_by_name_helper(const std::string &name, node &nod, _node_list &nod_lst) {
+	size_t i = 0;
+	if(nod.get_name() == name)
+		nod_lst.add_node(nod);
+	for(; i < nod.node_size(); ++i)
+		_get_nodes_by_name_helper(name, nod.get_node_at(i), nod_lst);
+}
+
 void _node_list::add_node(node &nod) {
-	_nodes.push_back(nod);
+	_lst.push_back(nod);
 }
 
 node &_node_list::get_node_at(size_t index) {
-	return _nodes.at(index);
+	return _lst.at(index);
 }
 
 std::vector<node> &_node_list::get_nodes(void) {
-	return _nodes;
+	return _lst;
+}
+
+size_t _node_list::get_nodes_by_name(const std::string &name, node &nod, _node_list &nod_lst) {
+	_get_nodes_by_name_helper(name, nod, nod_lst);
+	return nod_lst.size();
 }
 
 bool _node_list::insert_node(node &nod, size_t index) {
-	if(index > _nodes.size())
+	if(index > _lst.size())
 		return false;
-	else if(index == _nodes.size())
-		_nodes.push_back(nod);
+	else if(index == _lst.size())
+		_lst.push_back(nod);
 	else
-		_nodes.insert(_nodes.begin() + index, nod);
+		_lst.insert(_lst.begin() + index, nod);
 	return true;
 }
 
 bool _node_list::is_empty(void) {
-	return _nodes.empty();
+	return _lst.empty();
 }
 
 bool _node_list::remove_node(size_t index) {
-	if(index >= _nodes.size())
+	if(index >= _lst.size())
 		return false;
-	_nodes.erase(_nodes.begin() + index);
+	_lst.erase(_lst.begin() + index);
 	return true;
 }
 
 size_t _node_list::size(void) {
-	return _nodes.size();
+	return _lst.size();
 }
 
 std::string _node_list::to_string() {
 	size_t i = 0;
 	std::stringstream ss;
-	for(; i < _nodes.size(); ++i)
-		ss << _nodes.at(i).to_string(0) << std::endl;
+	for(; i < _lst.size(); ++i)
+		ss << _lst.at(i).to_string(0) << std::endl;
 	return ss.str();
 }

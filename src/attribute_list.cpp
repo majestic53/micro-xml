@@ -27,7 +27,7 @@ _attribute_list::_attribute_list(void) {
 }
 
 _attribute_list::_attribute_list(const _attribute_list &other) :
-		_attributes(other._attributes) {
+		_lst(other._lst) {
 	return;
 }
 
@@ -38,68 +38,68 @@ _attribute_list::~_attribute_list(void) {
 _attribute_list &_attribute_list::operator=(const _attribute_list &other) {
 	if(this == &other)
 		return *this;
-	_attributes = other._attributes;
+	_lst = other._lst;
 	return *this;
 }
 
 void _attribute_list::add_attribute(attribute &attr) {
-	_attributes.push_back(attr);
+	_lst.push_back(attr);
 }
 
 bool _attribute_list::contains(const std::string &name) {
 	size_t i = 0;
-	for(; i < _attributes.size(); ++i)
-		if(_attributes.at(i).get_name() == name)
+	for(; i < _lst.size(); ++i)
+		if(_lst.at(i).get_name() == name)
 			return true;
 	return false;
 }
 
 bool _attribute_list::contains(attribute &attr) {
 	size_t i = 0;
-	for(; i < _attributes.size(); ++i)
-		if(_attributes.at(i) == attr)
+	for(; i < _lst.size(); ++i)
+		if(_lst.at(i) == attr)
 			return true;
 	return false;
 }
 
 attribute &_attribute_list::get_attribute_at(size_t index) {
-	return _attributes.at(index);
+	return _lst.at(index);
 }
 
 std::vector<attribute> &_attribute_list::get_attributes(void) {
-	return _attributes;
+	return _lst;
 }
 
 bool _attribute_list::insert_attribute(attribute &attr, size_t index) {
-	if(index > _attributes.size())
+	if(index > _lst.size())
 		return false;
-	else if(index == _attributes.size())
-		_attributes.push_back(attr);
+	else if(index == _lst.size())
+		_lst.push_back(attr);
 	else
-		_attributes.insert(_attributes.begin() + index, attr);
+		_lst.insert(_lst.begin() + index, attr);
 	return true;
 }
 
 bool _attribute_list::is_empty(void) {
-	return _attributes.empty();
+	return _lst.empty();
 }
 
 bool _attribute_list::remove_attribute(size_t index) {
-	if(index >= _attributes.size())
+	if(index >= _lst.size())
 		return false;
-	_attributes.erase(_attributes.begin() + index);
+	_lst.erase(_lst.begin() + index);
 	return true;
 }
 
 size_t _attribute_list::size(void) {
-	return _attributes.size();
+	return _lst.size();
 }
 
 std::string _attribute_list::to_string(void) {
 	size_t i = 0;
 	std::stringstream ss;
-	for(; i < _attributes.size() - 1; ++i)
-		ss << _attributes.at(i).to_string(0) << " ";
-	ss << _attributes.at(i).to_string(0);
+	for(; i < _lst.size() - 1; ++i)
+		ss << _lst.at(i).to_string(0) << " ";
+	ss << _lst.at(i).to_string(0);
 	return ss.str();
 }
