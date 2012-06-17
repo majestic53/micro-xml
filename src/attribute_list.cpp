@@ -66,6 +66,16 @@ attribute &_attribute_list::get_attribute_at(size_t index) {
 	return _lst.at(index);
 }
 
+bool _attribute_list::get_attribute_by_name(const std::string &name, attribute &attr) {
+	size_t i = 0;
+	for(; i < _lst.size(); ++i)
+		if(_lst.at(i).get_name() == name) {
+			attr = _lst.at(i);
+			return true;
+		}
+	return false;
+}
+
 std::vector<attribute> &_attribute_list::get_attributes(void) {
 	return _lst;
 }

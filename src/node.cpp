@@ -68,6 +68,10 @@ attribute &_node::get_attribute_at(size_t index) {
 	return _attributes.get_attribute_at(index);
 }
 
+bool _node::get_attribute_by_name(const std::string &name, attribute &attr) {
+	return _attributes.get_attribute_by_name(name, attr);
+}
+
 attribute_list &_node::get_attributes(void) {
 	return _attributes;
 }

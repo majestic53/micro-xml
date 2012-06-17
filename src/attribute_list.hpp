@@ -39,6 +39,7 @@ namespace __mxml {
 			bool contains(const std::string &name);
 			bool contains(_attribute &attr);
 			attribute &get_attribute_at(size_t index);
+			bool get_attribute_by_name(const std::string &name, attribute &attr);
 			std::vector<attribute> &get_attributes(void);
 			bool insert_attribute(attribute &attr, size_t index);
 			bool is_empty(void);

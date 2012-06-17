@@ -45,6 +45,7 @@ namespace __mxml {
 			void add_node(_node &nod);
 			size_t attribute_size(void);
 			attribute &get_attribute_at(size_t index);
+			bool get_attribute_by_name(const std::string &name, attribute &attr);
 			attribute_list &get_attributes(void);
 			_node &get_node_at(size_t index);
 			std::vector<_node> &get_nodes(void);
