@@ -3,6 +3,21 @@ Micro-XML
 
 A super small xml parser library written in C++.
 
+* [Purpose](https://github.com/majestic53/micro-xml#purpose)
+* [Syntax](https://github.com/majestic53/micro-xml#syntax)
+* [Use Cases](https://github.com/majestic53/micro-xml#use-cases)
+* [Types](https://github.com/majestic53/micro-xml#types)
+* [Build](https://github.com/majestic53/micro-xml#build)
+	* [Windows](https://github.com/majestic53/micro-xml#windows)
+	* [Linux/Unix](https://github.com/majestic53/micro-xml#linux-unix)
+* [Using This Library](https://github.com/majestic53/micro-xml#using-this-library)
+* [Examples](https://github.com/majestic53/micro-xml#examples)
+	* [Parsing nodes from XML Files](https://github.com/majestic53/micro-xml#parsing-nodes-from-xml-files)
+	* [Parsing attributes from nodes](https://github.com/majestic53/micro-xml#parsing-attributes-from-nodes)
+	* [Reading XML Files](https://github.com/majestic53/micro-xml#reading-xml-files)
+	* [Writing XML Files](https://github.com/majestic53/micro-xml#writing-xml-files)
+* [License](https://github.com/majestic53/micro-xml#license)
+
 Purpose
 ========
 
@@ -51,7 +66,7 @@ Build
 
 This project has not been tested in a Windows environment. However, the files should be able to be imported into a Visual Studios project without a problem.
 
-###Linux (Unix):
+###Linux/Unix:
 
 Using the makefile to generate a static library (.a)
 
