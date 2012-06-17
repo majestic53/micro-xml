@@ -2,22 +2,21 @@ Micro-XML
 ========
 
 A super small xml parser library written in C++.
-```
-* [Purpose](https://github.com/majestic53/micro-xml#purpose)
-* [Syntax](https://github.com/majestic53/micro-xml#syntax)
-* [Use Cases](https://github.com/majestic53/micro-xml#use-cases)
-* [Types](https://github.com/majestic53/micro-xml#types)
-* [Build](https://github.com/majestic53/micro-xml#build)
+
+1. [Purpose](https://github.com/majestic53/micro-xml#purpose)
+2. [Syntax](https://github.com/majestic53/micro-xml#syntax)
+3. [Use Cases](https://github.com/majestic53/micro-xml#use-cases)
+4. [Types](https://github.com/majestic53/micro-xml#types)
+5. [Build](https://github.com/majestic53/micro-xml#build)
 	* [Windows](https://github.com/majestic53/micro-xml#windows)
 	* [Linux/Unix](https://github.com/majestic53/micro-xml#linux-unix)
-* [Using This Library](https://github.com/majestic53/micro-xml#using-this-library)
-* [Examples](https://github.com/majestic53/micro-xml#examples)
+6. [Using This Library](https://github.com/majestic53/micro-xml#using-this-library)
+7. [Examples](https://github.com/majestic53/micro-xml#examples)
 	* [Parsing nodes from XML Files](https://github.com/majestic53/micro-xml#parsing-nodes-from-xml-files)
 	* [Parsing attributes from nodes](https://github.com/majestic53/micro-xml#parsing-attributes-from-nodes)
 	* [Reading XML Files](https://github.com/majestic53/micro-xml#reading-xml-files)
 	* [Writing XML Files](https://github.com/majestic53/micro-xml#writing-xml-files)
-* [License](https://github.com/majestic53/micro-xml#license)
-```
+8. [License](https://github.com/majestic53/micro-xml#license)
 
 Purpose
 ========
