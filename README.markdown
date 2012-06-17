@@ -142,7 +142,7 @@ count = node_list::get_nodes_by_name("name", nod, lst);
 Due to the restriction that nodes only contain unique attribute names, only one occurance of any given attribute is expected per node. Therefore, finding attributes can be done through a simple search by calling the function ``` get_attribute_by_name() ```, as shown below.
 ```cpp
 node_list lst = doc.get_nodes_by_name("contact"); // retrieve a list of contact nodes
-for(size_t i = 0; i < lst2.size(); ++i) {
+for(size_t i = 0; i < lst.size(); ++i) {
 	attribute attr;
 	lst.get_node_at(i).get_attribute_by_name("id", attr);
 	std::cout << attr.to_string(0) << std::endl; // print the id attribute
