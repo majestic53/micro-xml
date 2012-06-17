@@ -54,6 +54,10 @@ void _node_list::add_node(node &nod) {
 	_lst.push_back(nod);
 }
 
+void _node_list::clear(void) {
+	_lst.clear();
+}
+
 node &_node_list::get_node_at(size_t index) {
 	return _lst.at(index);
 }

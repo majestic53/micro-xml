@@ -38,6 +38,7 @@ namespace __mxml {
 			virtual ~_node_list(void);
 			_node_list &operator=(const _node_list &other);
 			void add_node(node &nod);
+			void clear(void);
 			node &get_node_at(size_t index);
 			std::vector<node> &get_nodes(void);
 			static size_t get_nodes_by_name(const std::string &name, node &nod, _node_list &nod_lst);

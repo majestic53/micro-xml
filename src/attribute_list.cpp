@@ -46,6 +46,10 @@ void _attribute_list::add_attribute(attribute &attr) {
 	_lst.push_back(attr);
 }
 
+void _attribute_list::clear(void) {
+	_lst.clear();
+}
+
 bool _attribute_list::contains(const std::string &name) {
 	size_t i = 0;
 	for(; i < _lst.size(); ++i)

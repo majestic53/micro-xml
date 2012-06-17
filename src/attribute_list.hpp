@@ -36,6 +36,7 @@ namespace __mxml {
 			virtual ~_attribute_list(void);
 			_attribute_list &operator=(const _attribute_list &other);
 			void add_attribute(attribute &attr);
+			void clear(void);
 			bool contains(const std::string &name);
 			bool contains(_attribute &attr);
 			attribute &get_attribute_at(size_t index);
