@@ -67,6 +67,7 @@ std::vector<node> &_node_list::get_nodes(void) {
 }
 
 size_t _node_list::get_nodes_by_name(const std::string &name, node &nod, _node_list &nod_lst) {
+	nod_lst.clear();
 	_get_nodes_by_name_helper(name, nod, nod_lst);
 	return nod_lst.size();
 }
