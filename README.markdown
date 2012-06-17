@@ -2,7 +2,7 @@ Micro-XML
 ========
 
 A super small xml parser library written in C++.
-
+```
 * [Purpose](https://github.com/majestic53/micro-xml#purpose)
 * [Syntax](https://github.com/majestic53/micro-xml#syntax)
 * [Use Cases](https://github.com/majestic53/micro-xml#use-cases)
@@ -17,6 +17,7 @@ A super small xml parser library written in C++.
 	* [Reading XML Files](https://github.com/majestic53/micro-xml#reading-xml-files)
 	* [Writing XML Files](https://github.com/majestic53/micro-xml#writing-xml-files)
 * [License](https://github.com/majestic53/micro-xml#license)
+```
 
 Purpose
 ========
