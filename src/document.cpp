@@ -65,16 +65,17 @@ std::string _document::_format_xml(_node &root) {
 	return output;
 }
 
-bool _document::_parse_xml(const std::string &input, bool is_file, _node &root) {
+void _document::_parse_xml(const std::string &input, bool is_file, _node &root) {
 	parser par;
+	std::string exc_mess;
 	try {
 		par = parser(input, is_file);
 		par._parse(root);
 	} catch(std::runtime_error &exc) {
-		std::cerr << "Exception: " << exc.what() << std::endl;
-		return false;
+		exc_mess = "mxml: ";
+		exc_mess += exc.what();
+		throw std::runtime_error(exc_mess);
 	}
-	return true;
 }
 
 node_list _document::get_nodes_by_name(const std::string &name) {
@@ -87,20 +88,20 @@ node &_document::get_root_node(void) {
 	return _root;
 }
 
-bool _document::read(const std::string &path, _document &doc) {
-	return _parse_xml(path, true, doc.get_root_node());
+void _document::read(const std::string &path, _document &doc) {
+	_parse_xml(path, true, doc.get_root_node());
 }
 
-bool _document::read(const std::string &path) {
-	return read(path, *this);
+void _document::read(const std::string &path) {
+	read(path, *this);
 }
 
-bool _document::read_from_string(const std::string &input, _document &doc) {
-	return _parse_xml(input, false, doc.get_root_node());
+void _document::read_from_string(const std::string &input, _document &doc) {
+	_parse_xml(input, false, doc.get_root_node());
 }
 
-bool _document::read_from_string(const std::string &input) {
-	return read_from_string(input, *this);
+void _document::read_from_string(const std::string &input) {
+	read_from_string(input, *this);
 }
 
 void _document::set_root_node(node &root) {

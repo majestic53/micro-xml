@@ -154,7 +154,7 @@ count = node_list::get_nodes_by_name("name", nod, lst);
 
 ###Parsing attributes from nodes
 
-Due to the restriction that nodes only contain unique attribute names, only one occurance of any given attribute is expected per node. Therefore, finding attributes can be done through a simple search by calling the function ``` get_attribute_by_name() ```, as shown below.
+Due to the restriction that nodes only contain unique attribute names, only one occurance of any given attribute is expected per node. Therefore, finding attributes can be done through a simple search by calling the function ``` get_attribute_by_name(<name>, <attr>) ```, as shown below.
 ```cpp
 node_list lst = doc.get_nodes_by_name("contact"); // retrieve a list of contact nodes
 for(size_t i = 0; i < lst.size(); ++i) {
@@ -164,11 +164,19 @@ for(size_t i = 0; i < lst.size(); ++i) {
 }
 ```
 
+This example will produce the following output:
+```
+id="0"
+id="1"
+id="2"
+```
+
 ###Reading XML Files
 
 This example shows how to read-in an xml file and parse the xml document for data. In this example, we will be parsing the demo xml file (above) for contact names.
 ```cpp
 #include <iostream>
+#include <stdexcept.h>
 #include "document.hpp"
 #include "node.hpp"
 #include "node_list.hpp"
@@ -179,7 +187,13 @@ int main(void) {
 
 	// instantiate an xml document and read-in file
 	document doc;
-	doc.read("demo.xml");
+
+	try {
+		doc.read("demo.xml");
+	} catch(std::runtime_error &exc) {
+		std::cerr << "Exception: " << exc.what() << std::endl;
+		return 1;
+	}
 
 	// retrieve a node list containing all contact names
 	node_list lst = doc.get_nodes_by_name("name");

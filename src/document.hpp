@@ -31,7 +31,7 @@ namespace __mxml {
 			_node _root;
 
 			static std::string _format_xml(_node &root);
-			static bool _parse_xml(const std::string &input, bool is_file, _node &root);
+			static void _parse_xml(const std::string &input, bool is_file, _node &root);
 
 		public:
 			_document(void);
@@ -42,10 +42,10 @@ namespace __mxml {
 			_document &operator=(const _document &other);
 			node_list get_nodes_by_name(const std::string &name);
 			node &get_root_node(void);
-			static bool read(const std::string &path, _document &doc);
-			bool read(const std::string &path);
-			static bool read_from_string(const std::string &input, _document &doc);
-			bool read_from_string(const std::string &input);
+			static void read(const std::string &path, _document &doc);
+			void read(const std::string &path);
+			static void read_from_string(const std::string &input, _document &doc);
+			void read_from_string(const std::string &input);
 			void set_root_node(node &root);
 			std::string to_string(void);
 			static bool write(const std::string &path, _document &doc);
