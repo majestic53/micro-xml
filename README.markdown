@@ -99,8 +99,7 @@ To use Micro-XML, simply include the library in your project with the appropriat
 
 Make sure to include the header files and indicate the namespace  in your project as well:
 ```cpp
-#include "[path-to-headers]/document.hpp"
-#include "[path-to-headers]/nodes.hpp"
+#include "[path-to-headers]/mxml.hpp"
 ...
 
 using namespace __mxml;
@@ -138,27 +137,27 @@ For the purpose of those examples, we will be using the demo xml file listed bel
 
 There are currently two different ways to create nodelists of sub-nodes. The first method involves search from a document's root node; returning a list of all sub-nodes with a given name.
 ```cpp
-document doc = ...; // some document
+mxml_document doc = ...; // some document
 ...
-node_list lst = doc.get_nodes_by_name("name");
+mxml_node_list lst = doc.get_nodes_by_name("name");
 ```
 
 The second method is more general, and can be used to both retrieve a series of sub-nodes, as well as a count of the sub-nodes with a given name. This method can be used from any node.
 ```cpp
-node nod = ...; // some node either parsed or created
+mxml_node nod = ...; // some node either parsed or created
 ...
 size_t count;
-node_list lst;
-count = node_list::get_nodes_by_name("name", nod, lst);
+mxml_node_list lst;
+count = mxml_node_list::get_nodes_by_name("name", nod, lst);
 ```
 
 ###Parsing attributes from nodes
 
 Due to the restriction that nodes only contain unique attribute names, only one occurance of any given attribute is expected per node. Therefore, finding attributes can be done through a simple search by calling the function ``` get_attribute_by_name(<name>, <attr>) ```, as shown below.
 ```cpp
-node_list lst = doc.get_nodes_by_name("contact"); // retrieve a list of contact nodes
+mxml_node_list lst = doc.get_nodes_by_name("contact"); // retrieve a list of contact nodes
 for(size_t i = 0; i < lst.size(); ++i) {
-	attribute attr;
+	mxml_attribute attr;
 	lst.get_node_at(i).get_attribute_by_name("id", attr);
 	std::cout << attr.to_string(0) << std::endl; // print the id attribute
 }
@@ -177,16 +176,14 @@ This example shows how to read-in an xml file and parse the xml document for dat
 ```cpp
 #include <iostream>
 #include <stdexcept.h>
-#include "document.hpp"
-#include "node.hpp"
-#include "node_list.hpp"
+#include "mxml.hpp"
 
 using namespace __mxml;
 
 int main(void) {
 
 	// instantiate an xml document and read-in file
-	document doc;
+	mxml_document doc;
 
 	try {
 		doc.read("demo.xml");
@@ -196,7 +193,7 @@ int main(void) {
 	}
 
 	// retrieve a node list containing all contact names
-	node_list lst = doc.get_nodes_by_name("name");
+	mxml_node_list lst = doc.get_nodes_by_name("name");
 
 	// process the nodes...
 	std::cout << "Contact Names: " << std::endl;
@@ -220,10 +217,7 @@ This example shows how to create an xml document and then write it to a file. Th
 ```cpp
 #include <iostream>
 #include <sstream>
-#include "attribute.hpp"
-#include "document.hpp"
-#include "node.hpp"
-#include "node_list.hpp"
+#include "mxml.hpp"
 
 using namespace __mxml;
 
@@ -240,16 +234,16 @@ int main(void) {
 	std::string emails[] = {"john@internet.com", "sarah@internet.com", "dave@internet.com",};
 
 	// instantiate a new xml document
-	document doc("address_book");
+	mxml_document doc("address_book");
 
 	// generate contact nodes
 	for(size_t i = 0; i < 3; ++i) {
-		node contact("contact");
-		attribute contact_id("id", to_string(i));
+		mxml_node contact("contact");
+		mxml_attribute contact_id("id", to_string(i));
 		contact.add_attribute(contact_id);
 
 		// generate sub-nodes
-		node name("name"), phone("phone"), email("email");
+		mxml_node name("name"), phone("phone"), email("email");
 		name.set_string(names[i]);
 		phone.set_string(phones[i]);
 		email.set_string(emails[i]);

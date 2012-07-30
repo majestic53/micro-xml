@@ -9,37 +9,37 @@ FLAG=-std=c++0x -O3 -funroll-all-loops
 all: mxml build
 
 build: 
-	ar rcs $(OUT) $(SRC)attribute.o $(SRC)attribute_list.o $(SRC)document.o $(SRC)element.o $(SRC)lexer.o $(SRC)node.o $(SRC)node_list.o $(SRC)parser.o $(SRC)pb_buff.o
+	ar rcs $(OUT) $(SRC)mxml_attribute.o $(SRC)mxml_attribute_list.o $(SRC)mxml_buffer.o $(SRC)mxml_document.o $(SRC)mxml_element.o $(SRC)mxml_lexer.o $(SRC)mxml_node.o $(SRC)mxml_node_list.o $(SRC)mxml_parser.o
 
 clean:
 	rm -f $(OUT)
 	rm -f $(SRC)*.o
 
-mxml: attribute.o attribute_list.o document.o element.o lexer.o node.o node_list.o parser.o pb_buff.o
+mxml: mxml_attribute.o mxml_attribute_list.o mxml_buffer.o mxml_document.o mxml_element.o mxml_lexer.o mxml_node.o mxml_node_list.o mxml_parser.o
 
-attribute.o: $(SRC)attribute.cpp $(SRC)attribute.hpp
-	$(CC) $(FLAG) -c $(SRC)attribute.cpp -o $(SRC)attribute.o
+mxml_attribute.o: $(SRC)mxml_attribute.cpp $(SRC)mxml_attribute.hpp
+	$(CC) $(FLAG) -c $(SRC)mxml_attribute.cpp -o $(SRC)mxml_attribute.o
 
-attribute_list.o: $(SRC)attribute_list.cpp $(SRC)attribute_list.hpp
-	$(CC) $(FLAG) -c $(SRC)attribute_list.cpp -o $(SRC)attribute_list.o
+mxml_attribute_list.o: $(SRC)mxml_attribute_list.cpp $(SRC)mxml_attribute_list.hpp
+	$(CC) $(FLAG) -c $(SRC)mxml_attribute_list.cpp -o $(SRC)mxml_attribute_list.o
 
-document.o: $(SRC)document.cpp $(SRC)document.hpp
-	$(CC) $(FLAG) -c $(SRC)document.cpp -o $(SRC)document.o
+mxml_buffer.o: $(SRC)mxml_buffer.cpp $(SRC)mxml_buffer.hpp
+	$(CC) $(FLAG) -c $(SRC)mxml_buffer.cpp -o $(SRC)mxml_buffer.o
 
-element.o: $(SRC)element.cpp $(SRC)element.hpp
-	$(CC) $(FLAG) -c $(SRC)element.cpp -o $(SRC)element.o
+mxml_document.o: $(SRC)mxml_document.cpp $(SRC)mxml_document.hpp
+	$(CC) $(FLAG) -c $(SRC)mxml_document.cpp -o $(SRC)mxml_document.o
 
-lexer.o: $(SRC)lexer.cpp $(SRC)lexer.hpp
-	$(CC) $(FLAG) -c $(SRC)lexer.cpp -o $(SRC)lexer.o
+mxml_element.o: $(SRC)mxml_element.cpp $(SRC)mxml_element.hpp
+	$(CC) $(FLAG) -c $(SRC)mxml_element.cpp -o $(SRC)mxml_element.o
 
-node.o: $(SRC)node.cpp $(SRC)node.hpp
-	$(CC) $(FLAG) -c $(SRC)node.cpp -o $(SRC)node.o
+mxml_lexer.o: $(SRC)mxml_lexer.cpp $(SRC)mxml_lexer.hpp
+	$(CC) $(FLAG) -c $(SRC)mxml_lexer.cpp -o $(SRC)mxml_lexer.o
 
-node_list.o: $(SRC)node_list.cpp $(SRC)node_list.hpp
-	$(CC) $(FLAG) -c $(SRC)node_list.cpp -o $(SRC)node_list.o
+mxml_node.o: $(SRC)mxml_node.cpp $(SRC)mxml_node.hpp
+	$(CC) $(FLAG) -c $(SRC)mxml_node.cpp -o $(SRC)mxml_node.o
 
-parser.o: $(SRC)parser.cpp $(SRC)parser.hpp
-	$(CC) $(FLAG) -c $(SRC)parser.cpp -o $(SRC)parser.o
+mxml_node_list.o: $(SRC)mxml_node_list.cpp $(SRC)mxml_node_list.hpp
+	$(CC) $(FLAG) -c $(SRC)mxml_node_list.cpp -o $(SRC)mxml_node_list.o
 
-pb_buff.o: $(SRC)pb_buff.cpp $(SRC)pb_buff.hpp
-	$(CC) $(FLAG) -c $(SRC)pb_buff.cpp -o $(SRC)pb_buff.o
+mxml_parser.o: $(SRC)mxml_parser.cpp $(SRC)mxml_parser.hpp
+	$(CC) $(FLAG) -c $(SRC)mxml_parser.cpp -o $(SRC)mxml_parser.o
